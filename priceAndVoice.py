@@ -248,7 +248,16 @@ def voice_interaction():
 
             if not preferences["category"]:
                 speak(
-                    "कृपया श्रेणी निर्दिष्ट करें। बीज, कीटनाशक, या उपकरण?" if selected_language == "hi" else "कृपया श्रेणी निर्दिष्ट करा. बियाणे, कीटकनाशक किंवा उपकरण?" if selected_language == "mr" else "Please specify category: Seed, Pesticide, or Equipment?",
+                    # If pygame is unavailable in the server environment, skip playback
+                    if not PYGAME_AVAILABLE:
+                        # Generate TTS file and return its path for client-side handling
+                        temp_dir = tempfile.gettempdir()
+                        temp_file_path = os.path.join(temp_dir, f"tts_{int(time.time()*1000)}.mp3")
+                        tts = gTTS(text=text, lang=lang)
+                        tts.save(temp_file_path)
+                        return {"audio_path": temp_file_path}
+
+                    if not pygame.mixer.get_init():
                     selected_language)
                 continue
 
@@ -266,6 +275,14 @@ def voice_interaction():
 
             detected_lang_price = GoogleTranslator(source='auto', target=selected_language).translate(user_query_price)
             if detected_lang_price:
+                from gtts import gTTS
+                import os
+                import tempfile
+                try:
+                    import pygame
+                    PYGAME_AVAILABLE = True
+                except Exception:
+                    PYGAME_AVAILABLE = False
                 user_query_price = detected_lang_price
 
             extracted_price = extract_price_regex(user_query_price)
