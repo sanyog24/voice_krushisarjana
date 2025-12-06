@@ -48,6 +48,11 @@ lemmatizer = WordNetLemmatizer()
 # Function to play speech
 def speak(text, lang):
     try:
+        # If pygame is unavailable in the server environment, skip playback
+        if not PYGAME_AVAILABLE:
+            print(f"[TTS] pygame unavailable, skipping audio playback: {text}")
+            return True
+        
         if not pygame.mixer.get_init():
             pygame.mixer.init()
         tts = gTTS(text, lang=lang, slow=False)
@@ -247,18 +252,7 @@ def voice_interaction():
             preferences = extract_preferences(user_query_category, preferences)
 
             if not preferences["category"]:
-                speak(
-                    # If pygame is unavailable in the server environment, skip playback
-                    if not PYGAME_AVAILABLE:
-                        # Generate TTS file and return its path for client-side handling
-                        temp_dir = tempfile.gettempdir()
-                        temp_file_path = os.path.join(temp_dir, f"tts_{int(time.time()*1000)}.mp3")
-                        tts = gTTS(text=text, lang=lang)
-                        tts.save(temp_file_path)
-                        return {"audio_path": temp_file_path}
-
-                    if not pygame.mixer.get_init():
-                    selected_language)
+                speak("I couldn't understand the category. Please say seed, pesticide, or equipment.", selected_language)
                 continue
 
             speak(price_prompt[selected_language], selected_language)
