@@ -33,7 +33,7 @@ frontend_products_data = []
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "https://krushi-sarjana.vercel.app"]}})
-socketio = SocketIO(app, cors_allowed_origins=["http://localhost:3000", "https://krushi-sarjana.vercel.app"])
+socketio = SocketIO(app, cors_allowed_origins=["http://localhost:3000", "https://krushi-sarjana.vercel.app"], async_mode='threading')
 
 # Configure Gemini API
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "YOUR_GEMINI_API_KEY")

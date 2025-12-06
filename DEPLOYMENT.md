@@ -20,7 +20,7 @@ Make sure your `price_prediction` folder is in your GitHub repository.
    - Root Directory: `price_prediction`
    - Runtime: `Python 3`
    - Build Command: `pip install -r requirements.txt`
-   - Start Command: `gunicorn --worker-class gevent -w 1 --bind 0.0.0.0:$PORT priceAndVoice:app`
+   - Start Command: `gunicorn --worker-class gthread --threads 4 -w 1 --bind 0.0.0.0:$PORT priceAndVoice:app`
 
 ### Step 3: Environment Variables
 Add the following environment variable in Render dashboard:
@@ -86,6 +86,7 @@ railway domain
 
 3. **WebSocket Support:**
    - Both Render and Railway support WebSockets
+   - Server uses Flask-SocketIO with `async_mode='threading'` compatible with Gunicorn gthread.
    - Ensure Socket.IO client connects to correct URL
 
 4. **CORS Configuration:**
