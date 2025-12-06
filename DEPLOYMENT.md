@@ -20,7 +20,7 @@ Make sure your `price_prediction` folder is in your GitHub repository.
    - Root Directory: `price_prediction`
    - Runtime: `Python 3`
    - Build Command: `pip install -r requirements.txt`
-   - Start Command: `gunicorn --worker-class eventlet -w 1 --bind 0.0.0.0:$PORT priceAndVoice:app`
+   - Start Command: `gunicorn --worker-class gevent -w 1 --bind 0.0.0.0:$PORT priceAndVoice:app`
 
 ### Step 3: Environment Variables
 Add the following environment variable in Render dashboard:
@@ -81,7 +81,7 @@ railway domain
 
 2. **Audio Processing:**
    - Voice assistant requires microphone access (browser permission)
-   - gTTS and pygame work on cloud servers
+   - Server-side audio playback via pygame is disabled on Render; gTTS still generates audio files that can be played client-side.
    - Speech recognition may have slight latency
 
 3. **WebSocket Support:**
