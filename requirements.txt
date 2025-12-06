@@ -7,7 +7,7 @@ setuptools>=65.0.0
 numpy>=1.26.0,<2.0.0
 pandas>=2.1.0,<3.0.0
 scikit-learn>=1.3.0,<2.0.0
-SpeechRecognition==3.10.1
+SpeechRecognition==3.10.4
 gTTS==2.5.0
 # pygame removed: requires SDL libraries not available on Render
 google-generativeai==0.3.2

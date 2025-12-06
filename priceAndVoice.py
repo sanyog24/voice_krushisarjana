@@ -5,11 +5,20 @@ import pandas as pd
 from datetime import datetime, timedelta
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
-import speech_recognition as sr
+try:
+    import speech_recognition as sr
+    SR_AVAILABLE = True
+except Exception as e:
+    print(f"Warning: Could not import speech_recognition: {e}")
+    SR_AVAILABLE = False
 from gtts import gTTS
 import os
 import tempfile
-import pygame
+try:
+    import pygame
+    PYGAME_AVAILABLE = True
+except Exception:
+    PYGAME_AVAILABLE = False
 try:
     import google.generativeai as genai
 except (ImportError, AttributeError) as e:
@@ -71,6 +80,9 @@ def speak(text, lang):
 
 # Function to recognize speech
 def recognize_speech(language):
+    if not SR_AVAILABLE:
+        print("Speech recognition not available on server")
+        return "Speech recognition unavailable"
     recognizer = sr.Recognizer()
     with sr.Microphone() as source:
         print("Listening...")
